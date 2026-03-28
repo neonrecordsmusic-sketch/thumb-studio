@@ -412,7 +412,7 @@ End with: BLUEPRINT V4.1 FINAL | ${dimInfo?.sub} FORMAT`;
         if (imgPart) setGeneratedImage(`data:${imgPart.inlineData.mimeType};base64,${imgPart.inlineData.data}`);
         else throw new Error("No image returned.");
       } else {
-        const res = await fetch("https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell", {
+        const res = await fetch("https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0", {
           method:"POST",
           headers:{ "Authorization":`Bearer ${apiKey}`, "Content-Type":"application/json" },
           body: JSON.stringify({ inputs: prompt })
