@@ -371,7 +371,7 @@ End with: BLUEPRINT V4.1 FINAL | ${dimInfo?.sub} FORMAT`;
       if (!geminiKey) { setBlueprint("⚠️ Configure sua Gemini API Key em API SETTINGS."); setIsLoading(false); return; }
       const fullPrompt = systemPrompt + "\n\n" + userMsg;
       const res = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiKey}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiKey}`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
