@@ -367,21 +367,23 @@ Structure with these exact sections:
 End with: BLUEPRINT V4.1 FINAL | ${dimInfo?.sub} FORMAT`;
 
     try {
-      const res  = await fetch("https://api.anthropic.com/v1/messages", {
-        method:"POST",
-        headers:{ "Content-Type":"application/json" },
-        body: JSON.stringify({
-          model:"claude-sonnet-4-20250514",
-          max_tokens:1000,
-          system: systemPrompt,
-          messages:[{ role:"user", content:userMsg }]
-        })
-      });
+      const geminiKey = localStorage.getItem("ts2_api_key") || "";
+      if (!geminiKey) { setBlueprint("⚠️ Configure sua Gemini API Key em API SETTINGS."); setIsLoading(false); return; }
+      const fullPrompt = systemPrompt + "\n\n" + userMsg;
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
+        }
+      );
       const data = await res.json();
-      const text = data.content?.map(c => c.text||"").join("") || "";
+      if (data.error) throw new Error(data.error.message);
+      const text = data.candidates?.[0]?.content?.parts?.map(p => p.text||"").join("") || "";
       setBlueprint(text.trim());
-    } catch {
-      setBlueprint("Error generating blueprint. Please try again.");
+    } catch(e) {
+      setBlueprint("Erro ao gerar blueprint: " + (e.message || "tente novamente."));
     }
     setIsLoading(false);
   }
