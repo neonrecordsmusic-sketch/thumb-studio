@@ -377,7 +377,7 @@ End with: BLUEPRINT V4.1 FINAL | ${dimInfo?.sub} FORMAT`;
       const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${groqKey}` },
-        body: JSON.stringify({ model: "llama3-8b-8192", messages: [{ role: "user", content: fullPrompt }], max_tokens: 1000 })
+        body: JSON.stringify({ model: "llama-3.3-70b-versatile", messages: [{ role: "user", content: fullPrompt }], max_tokens: 1000 })
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error.message);
